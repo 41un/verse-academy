@@ -224,8 +224,14 @@ function Lesson() {
                                       variant="contained" 
                                       color="primary"
                                       onClick={() => {
-                                          setShowModal(false);
-                                          setSubmittedAnswers(null); 
+                                        setShowModal(false);
+                                        setSubmittedAnswers(null);
+                                        setAnswers({});
+                                        setCorrectCount(0);
+                                        setIsAllAnswered(false);
+                                        setShowConfetti(false);
+                                        setProgress(0);
+                                        setShowNextButton(false);
                                       }}
                                   >
                                       Next Lesson

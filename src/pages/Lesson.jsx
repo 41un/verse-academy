@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useWallet } from '../WalletContext';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Vimeo from '@u-wave/react-vimeo';
@@ -29,6 +30,7 @@ function Lesson() {
     const course = courses.find(c => c.id === parseInt(courseId, 10));
     const lesson = course?.lessons.find(l => l.id === parseInt(lessonId, 10));
 
+    const { isConnected } = useWallet();
 
     useEffect(() => {
         let progressTimer;
@@ -189,9 +191,9 @@ function Lesson() {
                         color="primary"
                         sx={{ marginTop: '40px', width: '100%' }}
                         onClick={handleSubmit}
-                        disabled={!isAllAnswered}
+                        disabled={!isAllAnswered || !isConnected}
                     >
-                        Submit Answers
+                        {isAllAnswered && !isConnected ? "Connect your wallet" : "Submit Answers"}
                     </Button>
                 </div>
             </Paper>

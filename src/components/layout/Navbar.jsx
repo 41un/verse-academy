@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AppBar,
@@ -12,14 +12,15 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Web3Button } from '@web3modal/react'; // Import Web3Button
-import { useWeb3Modal } from '@web3modal/react';
+import { Web3Button } from '@web3modal/react'; 
+import { useWallet } from '../../WalletContext'; 
 
 function Navbar() {
-  const { account } = useWeb3Modal();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isConnected } = useWallet(); 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
   const menuItems = [
     { link: '/', label: 'Home' },
@@ -47,8 +48,8 @@ function Navbar() {
             <IconButton edge='start' color='inherit' aria-label='menu' onClick={toggleMenu}>
               <MenuIcon />
             </IconButton>
-            <Web3Button /> {/* Use the pre-styled Web3Button */}
-            <div style={{ width: 48 }} /> {/* This is an empty space equal to the hamburger menu's width for centering the button */}
+            <Web3Button /> 
+            <div style={{ width: 48 }} /> 
           </Toolbar>
           <Drawer anchor='left' open={isMenuOpen} onClose={closeMenu}>
             <List sx={{ width: 250 }}>
@@ -80,7 +81,7 @@ function Navbar() {
                 </Link>
               ))}
             </div>
-            <Web3Button /> {/* Use the pre-styled Web3Button */}
+            <Web3Button /> 
           </Toolbar>
         </AppBar>
       )}

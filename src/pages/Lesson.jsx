@@ -73,10 +73,10 @@ function Lesson() {
                 height: window.innerHeight,
             });
     
-            if(window.innerWidth < 768) { // Assuming 768px is your breakpoint for mobile
-                setLottieSize({ width: 200, height: 200 }); // Or any size that fits your design
+            if(window.innerWidth < 768) {
+                setLottieSize({ width: 200, height: 200 }); 
             } else {
-                setLottieSize({ width: 400, height: 400 }); // Desktop size
+                setLottieSize({ width: 400, height: 400 });
             }
         };
     

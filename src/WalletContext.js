@@ -55,7 +55,7 @@ export const WalletProvider = ({ children }) => {
 
 
   // Smart contract data
-  const contractAddress = "Your contract address here";
+  const contractAddress = "0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2";
   const contractABI = VERSE_LEARN_ABI;
   const tokenAddress = "0x37d4203fae62ccd7b1a78ef58a5515021ed8fd84"; 
 

@@ -2,7 +2,7 @@ import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { infuraProvider } from 'wagmi/providers/infura';
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { arbitrum, mainnet, polygon, goerli } from 'wagmi/chains';
+import { goerli } from 'wagmi/chains';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from "./pages/Home";
@@ -12,7 +12,7 @@ import Lesson from "./pages/Lesson";
 import { WalletProvider } from './WalletContext'; 
 import AdminPanel from './pages/AdminPanel';
 
-const chains = [arbitrum, mainnet, polygon, goerli];
+const chains = [goerli];
 const projectId = process.env.REACT_APP_PROJECT_ID;
 
 const { publicClient } = configureChains(
@@ -20,7 +20,7 @@ const { publicClient } = configureChains(
     [
         infuraProvider(
             {
-                apiKey: process.env.INFURA_API_KEY
+                apiKey: 'b5cade57b5984317bf3ee8b17f841b4e'
             }
         ),
         // alchemyProvider(

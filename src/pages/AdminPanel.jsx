@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useWallet } from '../WalletContext'
+import { useWallet } from '../WalletContext';
 import { Button, TextField, Container, Typography } from '@mui/material';
 
 const AdminPanel = () => {
@@ -7,40 +7,42 @@ const AdminPanel = () => {
     const [checkAddress, setCheckAddress] = useState('');
     const { registerUserWrite, currentCheckpoint } = useWallet();
 
-const handleRegisterUser = async () => {
-    try {
-        if (!userAddress) {
-            alert('Please enter a valid address.');
+    const handleRegisterUser = async () => {
+        try {
+            if (!userAddress) {
+                alert('Please enter a valid address.');
+                return;
+            }
+
+            const result = await registerUserWrite.write({ args: [userAddress] });
+
+            if (result && result.transactionHash) {
+                alert('User successfully registered!');
+                console.log(result.transactionHash);
+            } else {
+                alert('Failed to register user.');
+            }
+        } catch (error) {
+            console.error('Error registering user:', error);
+            alert('An error occurred. Please try again.');
+        }
+    };
+
+    const handleCheckAddress = () => {
+        if (!checkAddress) {
+            alert('Please enter a valid address to check.');
             return;
         }
 
-        const result = await registerUserWrite.write({ args: [userAddress] });
+        const checkpoint = currentCheckpoint.data;
 
-        if (result && result.transactionHash) {
-            alert('User successfully registered!');
-            console.log(result.transactionHash)
+        if (checkpoint > 0) {
+            alert(`User ${checkAddress} has a checkpoint of ${checkpoint}.`);
         } else {
-            alert('Failed to register user.');
+            alert(`User ${checkAddress} has no checkpoint.`);
         }
-    } catch (error) {
-        console.error('Error registering user:', error);
-        alert('An error occurred. Please try again.');
-    }
-};
+    };
 
-const handleCheckAddress = async () => {
-    if (!checkAddress) {
-        alert('Please enter a valid address to check.');
-        return;
-    }
-    const checkpoint = await currentCheckpoint.data;
-
-    if (checkpoint > 0) {
-        alert(`User ${checkAddress} has a checkpoint of ${checkpoint}.`);
-    } else {
-        alert(`User ${checkAddress} has no checkpoint.`);
-    }
-};
 
 return (
     <Container>

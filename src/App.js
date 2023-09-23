@@ -1,4 +1,5 @@
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
+import { infuraProvider } from 'wagmi/providers/infura';
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { arbitrum, mainnet, polygon, goerli } from 'wagmi/chains';
@@ -14,7 +15,22 @@ import AdminPanel from './pages/AdminPanel';
 const chains = [arbitrum, mainnet, polygon, goerli];
 const projectId = process.env.REACT_APP_PROJECT_ID;
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
+const { publicClient } = configureChains(
+    chains, 
+    [
+        infuraProvider(
+            {
+                apiKey: process.env.INFURA_API_KEY
+            }
+        ),
+        // alchemyProvider(
+        // {
+        // apiKey: ALCHEMY_API_KEY
+        // }
+        // ),
+        // publicProvider()
+    ],
+);
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: w3mConnectors({ projectId, chains }),
@@ -44,6 +60,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 

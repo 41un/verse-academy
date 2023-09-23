@@ -95,25 +95,25 @@ export const WalletProvider = ({ children }) => {
 
 
   // Write
-    const registerUser = useContractWrite({
+    const registerUserWrite = useContractWrite({
       address: contractAddress,
       abi: contractABI,
       functionName: 'registerUser',
     });
 
-  const claimETH = useContractWrite({
+  const claimETHWrite = useContractWrite({
       address: contractAddress,
       abi: contractABI,
       functionName: 'claimETH',
     });
 
-  const checkpointSave = useContractWrite({
+  const checkpointSaveWrite = useContractWrite({
       address: contractAddress,
       abi: contractABI,
       functionName: 'checkpointSave',
     });
 
-  const receiveReward = useContractWrite({
+  const receiveRewardWrite = useContractWrite({
       address: contractAddress,
       abi: contractABI,
       functionName: 'receiveReward',
@@ -130,10 +130,10 @@ export const WalletProvider = ({ children }) => {
       userHasClaimedETH: userHasClaimedETH.data,
       erc20Balance: erc20Balance.data,
       ethBalance: ethBalance.data,
-      registerUser,
-      claimETH,
-      checkpointSave,
-      receiveReward,
+      registerUserWrite,
+      claimETHWrite,
+      checkpointSaveWrite,
+      receiveRewardWrite,
       }}>
       {children}
     </WalletContext.Provider>

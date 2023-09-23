@@ -67,12 +67,12 @@ export const WalletProvider = ({ children }) => {
     args: [walletState.account],
   });
 
-  const userPasswords = useContractRead({
-    address: contractAddress,
-    abi: contractABI,
-    functionName: 'passwords',
-    args: [walletState.account],
-  });
+  // const userPasswords = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractABI,
+  //   functionName: 'passwords',
+  //   args: [walletState.account],
+  // });
 
   const userHasClaimedETH = useContractRead({
     address: contractAddress,
@@ -126,7 +126,7 @@ export const WalletProvider = ({ children }) => {
       connectWallet, 
       disconnectWallet,
       currentCheckpoint: currentCheckpoint,
-      userPasswords: userPasswords,
+      // userPasswords: userPasswords,
       userHasClaimedETH: userHasClaimedETH,
       erc20Balance: erc20Balance,
       ethBalance: ethBalance,

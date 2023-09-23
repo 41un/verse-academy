@@ -1,88 +1,94 @@
-import React, { useState } from 'react';
-import { useWallet } from '../WalletContext';
+import { useState, useEffect } from 'react';
+import {
+    useAccount,
+    useContractWrite,
+    useContractRead
+} from 'wagmi';
 import { Button, TextField, Container, Typography } from '@mui/material';
+import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
 
-const AdminPanel = () => {
+const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
+
+function AdminPanel () {
     const [userAddress, setUserAddress] = useState('');
-    const [checkAddress, setCheckAddress] = useState('');
-    const { registerUserWrite, currentCheckpoint } = useWallet();
+    const [shouldRead, setShouldRead] = useState(false);
 
-    const handleRegisterUser = async () => {
-        try {
-            if (!userAddress) {
-                alert('Please enter a valid address.');
-                return;
-            }
-
-            const result = await registerUserWrite.write({ args: [userAddress] });
-
-            if (result && result.transactionHash) {
-                alert('User successfully registered!');
-                console.log(result.transactionHash);
-            } else {
-                alert('Failed to register user.');
-            }
-        } catch (error) {
-            console.error('Error registering user:', error);
-            alert('An error occurred. Please try again.');
+    const { isConnecting, isDisconnected } = useAccount({
+        onConnect: ({ address, connector, isReconnected }) => {
+            console.log('Connected', { address, connector, isReconnected });
+        },
+        onDisconnect: () => {
+            console.log('Disconnected');
         }
-    };
+    });
+
+    const { data: writeData, isLoading, isSuccess, write } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'registerUser',
+        args: [userAddress]
+    });
+
+    const isValidAddress = userAddress.length === 42;
+
+    const { data: readData, isError, isLoading: isReading } = useContractRead({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'currentCheckPoint',
+        args: isValidAddress ? [userAddress] : []
+    });
+
+    console.log(Number(readData));
+
+    useEffect(() => {
+        if (isReading || isError || readData) {
+            setShouldRead(false);
+        }
+    }, [isReading, isError, readData]);
 
     const handleCheckAddress = () => {
-        if (!checkAddress) {
-            alert('Please enter a valid address to check.');
-            return;
-        }
-
-        const checkpoint = currentCheckpoint.data;
-
-        if (checkpoint > 0) {
-            alert(`User ${checkAddress} has a checkpoint of ${checkpoint}.`);
-        } else {
-            alert(`User ${checkAddress} has no checkpoint.`);
+        if (isValidAddress) {
+            setShouldRead(true);
         }
     };
 
+    if (isConnecting) return <div>Connecting…</div>;
+    if (isDisconnected) return <div>Disconnected</div>;
 
-return (
-    <Container>
-        <Typography variant="h4" gutterBottom>
-            Admin Panel
-        </Typography>
-        
-        <Typography variant="h6" gutterBottom>
-            Register a User
-        </Typography>
-        <TextField
-            fullWidth
-            label="User Address"
-            variant="outlined"
-            value={userAddress}
-            onChange={(e) => setUserAddress(e.target.value)}
-            placeholder="Enter Ethereum address"
-            margin="normal"
-        />
-        <Button variant="contained" color="primary" onClick={handleRegisterUser}>
-            Register User
-        </Button>
+    return (
+        <Container>
+            <Typography variant="h4" gutterBottom>
+                Admin Panel
+            </Typography>
 
-        <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
-            Check a User's Checkpoint
-        </Typography>
-        <TextField
-            fullWidth
-            label="Address to Check"
-            variant="outlined"
-            value={checkAddress}
-            onChange={(e) => setCheckAddress(e.target.value)}
-            placeholder="Enter Ethereum address to check"
-            margin="normal"
-        />
-        <Button variant="contained" color="secondary" onClick={handleCheckAddress}>
-            Check Address
-        </Button>
-    </Container>
-);
+            <Typography variant="h6" gutterBottom>
+                Register a User
+            </Typography>
+            <TextField
+                fullWidth
+                label="User Address"
+                variant="outlined"
+                value={userAddress}
+                onChange={(e) => setUserAddress(e.target.value)}
+                placeholder="Enter Ethereum address"
+                margin="normal"
+            />
+            <Button variant="contained" color="primary" onClick={() => write()}>
+                Register User
+            </Button>
+            {isLoading && <div>Check Wallet</div>}
+            {isSuccess && <div>Transaction: {JSON.stringify(writeData)}</div>}
+
+            <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
+                Check a User's Checkpoint for address: {userAddress}
+            </Typography>
+            <Button variant="contained" color="secondary" onClick={handleCheckAddress}>
+                Check Address
+            </Button>
+            {isReading && <div>Loading checkpoint...</div>}
+            {readData && <div>Checkpoint: {String(readData)}</div>}
+        </Container>
+    );
 };
 
 export default AdminPanel;

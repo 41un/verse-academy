@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from  'react-router-dom';
 import { Grid, Typography, Paper, Button, useMediaQuery, useTheme } from '@mui/material';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
@@ -18,15 +19,16 @@ function Hero() {
                         Learn about DeFi with Verse and earn as you discover. A seamless way to navigate the world of decentralized finance.
                     </Typography>
                     {!isMobile && (
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
-                            size="large"
-                            // Add an onClick handler or a link here if needed
-                        >
-                            <PaymentsOutlinedIcon sx={{ marginRight: '15px' }} />
-                            Start earning
-                        </Button>
+                        <Link to={`/courses/1`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                size="large"
+                            >
+                                <PaymentsOutlinedIcon sx={{ marginRight: '15px' }} />
+                                Start earning
+                            </Button>
+                        </Link>
                     )}
                 </Grid>
                 <Grid item xs={12} md={6}>

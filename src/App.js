@@ -1,7 +1,7 @@
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { arbitrum, mainnet, polygon } from 'wagmi/chains';
+import { arbitrum, mainnet, polygon, goerli } from 'wagmi/chains';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from "./pages/Home";
@@ -9,8 +9,9 @@ import AllCourses from "./pages/AllCourses";
 import Course from "./pages/Course";
 import Lesson from "./pages/Lesson";
 import { WalletProvider } from './WalletContext'; 
+import AdminPanel from './pages/AdminPanel';
 
-const chains = [arbitrum, mainnet, polygon];
+const chains = [arbitrum, mainnet, polygon, goerli];
 const projectId = process.env.REACT_APP_PROJECT_ID;
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
@@ -33,6 +34,7 @@ function App() {
             <Route path="/courses" element={<AllCourses />} />
             <Route path="/courses/:courseId" element={<Course />} />
             <Route path="/courses/:courseId/lessons/:lessonId" element={<Lesson />} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </Router>
         <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />

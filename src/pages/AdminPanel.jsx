@@ -92,6 +92,24 @@ function AdminPanel() {
         }
     };
 
+    // User claims VERSE reward
+    const { write: claimReward, isLoading: isClaiming, isSuccess: rewardSuccess } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'receiveReward',
+        args: [],
+        value: depositAmount
+    });
+
+    const handleClaimReward = () => {
+        if (String(checkpoint) >= 5) {
+            claimReward();
+        } else {
+            console.log(`User has only reached ${String(checkpoint)} checkpoints`);
+        }
+    };
+
+
     if (isConnecting) return <div>Connecting…</div>;
     if (isDisconnected) return <div>Disconnected</div>;
 
@@ -155,6 +173,12 @@ function AdminPanel() {
                 Deposit ETH to Contract
             </Button>
             {isDepositing && <div>Depositing...</div>}
+
+            <Button sx={{marginTop: '20px'}} variant="contained" color="primary" onClick={handleClaimReward}>
+                Claim Reward
+            </Button>
+            {isClaiming && <div>Claiming...</div>}
+            {rewardSuccess && <div>Transaction: {JSON.stringify(claimReward)}</div>}
         </Container>
     );
 }

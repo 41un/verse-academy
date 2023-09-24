@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useWallet } from '../WalletContext';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Vimeo from '@u-wave/react-vimeo';
@@ -8,12 +7,26 @@ import courses from '../components/courses';
 import { Button, Radio, RadioGroup, FormControlLabel, FormControl, Paper, Typography, CircularProgress, Modal } from '@mui/material';
 import Lottie from "lottie-react";
 import successAnimation from '../components/animations/successAnimation.json'
+import {
+    useAccount,
+    useContractWrite,
+    useContractRead
+} from 'wagmi';
+import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
+
+const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
 
 function Lesson() {
+    const [userAddress, setUserAddress] = useState('');
+    const [checkpoint, setCheckpoint] = useState(0);
+    const [depositAmount, setDepositAmount] = useState('');  // Amount of ETH to deposit
+
+
+
     const { courseId, lessonId } = useParams();
     const [answers, setAnswers] = useState({});
     const [correctCount, setCorrectCount] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
     const [showConfetti, setShowConfetti] = useState(false);
     const [isAllAnswered, setIsAllAnswered] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -26,11 +39,82 @@ function Lesson() {
     const [submittedAnswers, setSubmittedAnswers] = useState(null);
     const [lottieSize, setLottieSize] = useState({ width: 400, height: 400 });
 
+    // Web3 Functions
+    const isValidAddress = userAddress.length === 42;
+
+
+    const { isConnecting, isDisconnected } = useAccount({
+        onConnect: ({ address, connector, isReconnected }) => {
+            console.log('Connected', { address, connector, isReconnected });
+        },
+        onDisconnect: () => {
+            console.log('Disconnected');
+        }
+    });
+
+    // Current User Checkpoint
+    const { data: readData, isError, isLoading: isReading } = useContractRead({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'currentCheckPoint',
+        args: isValidAddress ? [userAddress] : []
+    });
+
+    // Add a checkpoint
+    const { write: saveCheckpoint } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'checkpointSave',
+        args: [checkpoint + 1]
+    });
+
+    // Claim from Faucet
+    const { write: claimETH } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'claimETH'
+    });
+
+
+    useEffect(() => {
+        if (readData) {
+            setCheckpoint(Number(readData));
+        }
+    }, [readData]);
+
+    const handleIncrementCheckpoint = () => {
+        if (isValidAddress) {
+            saveCheckpoint();
+        }
+    };
+
+    const handleClaimETH = () => {
+        if (isValidAddress) {
+            claimETH();
+        }
+    };
+
+
+    // User claims VERSE reward
+    const { write: claimReward, isLoading: isClaiming, isSuccess: rewardSuccess } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'receiveReward',
+        args: [],
+        value: depositAmount
+    });
+
+    const handleClaimReward = () => {
+        if (String(checkpoint) >= 5) {
+            claimReward();
+        } else {
+            console.log(`User has only reached ${String(checkpoint)} checkpoints`);
+        }
+    };
 
     const course = courses.find(c => c.id === parseInt(courseId, 10));
     const lesson = course?.lessons.find(l => l.id === parseInt(lessonId, 10));
 
-    const { isConnected } = useWallet();
 
     useEffect(() => {
         let progressTimer;
@@ -138,11 +222,11 @@ function Lesson() {
                 <Typography variant="h4">{lesson.title}</Typography>
                 <Typography variant="body1" paragraph>{lesson.description}</Typography>
                 <div style={{ flexBasis: '50%', overflow: 'hidden', width: '100%', position: 'relative' }}>
-                    {isLoading && (
+                    {/* {isLoading && (
                         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                             <CircularProgress />
                         </div>
-                    )}
+                    )} */}
                     <Vimeo 
                         video={lesson.vimeoId.toString()}
                         // autoplay
@@ -150,7 +234,7 @@ function Lesson() {
                         title={false}
                         byline={false}
                         portrait={false}
-                        onReady={() => setIsLoading(false)}
+                        // onReady={() => setIsLoading(false)}
                     />
                 </div>
                 <div>
@@ -191,9 +275,9 @@ function Lesson() {
                         color="primary"
                         sx={{ marginTop: '40px', width: '100%' }}
                         onClick={handleSubmit}
-                        disabled={!isAllAnswered || !isConnected}
+                        disabled={!isAllAnswered || isDisconnected}
                     >
-                        {isAllAnswered && !isConnected ? "Connect your wallet" : "Submit Answers"}
+                        {isAllAnswered && isDisconnected ? "Connect your wallet" : "Submit Answers"}
                     </Button>
                 </div>
             </Paper>

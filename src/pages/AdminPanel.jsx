@@ -11,9 +11,10 @@ import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
 const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
 
 function AdminPanel() {
+    const [userToRegister, setUserToRegister] = useState(''); 
     const [shouldRead, setShouldRead] = useState(false);
     const [checkpoint, setCheckpoint] = useState(0);
-    const [depositAmount, setDepositAmount] = useState('');  // Amount of ETH to deposit
+    const [depositAmount, setDepositAmount] = useState(''); 
 
     const { address, isConnecting, isDisconnected } = useAccount({
         onConnect: ({ address, connector, isReconnected }) => {
@@ -63,6 +64,35 @@ function AdminPanel() {
         args: [],
         value: depositAmount
     });
+
+    const handleRegisterUser = async () => {
+        try {
+            if (!userToRegister) {
+                console.log("Please provide an address to register.");
+                return;
+            }
+            console.log("Calling registerUser...");
+            const response = await write({ args: [userToRegister] }); 
+            console.log("Response from registerUser:", response);
+    
+            if (response && response.hash) {
+                console.log("Waiting for transaction to complete...");
+                const data = await waitForTransaction({ hash: response.hash });
+                console.log("Response from waitForTransaction:", data);
+                
+                if (data) {
+                    console.log("User registered successfully!");
+                } else {
+                    console.error("No data received after waiting for transaction.");
+                }
+            } else {
+                console.error("No transaction hash received from registerUser.");
+            }
+        } catch (error) {
+            console.error("Error registering user:", error);
+        }
+    };
+    
 
     useEffect(() => {
         if (readData) {
@@ -134,6 +164,22 @@ function AdminPanel() {
             <Typography variant="h4" gutterBottom>
                 Admin Panel
             </Typography>
+            <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
+                Register a New User Address
+            </Typography>
+            <TextField
+                fullWidth
+                label="User Address"
+                variant="outlined"
+                value={userToRegister}
+                onChange={(e) => setUserToRegister(e.target.value)}
+                placeholder="Enter address to register"
+                margin="normal"
+            />
+            <Button variant="contained" color="primary" onClick={handleRegisterUser}>
+                Register User
+            </Button>
+
 
             <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
                 Check a User's Checkpoint for address: {address}

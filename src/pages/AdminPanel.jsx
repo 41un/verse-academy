@@ -9,9 +9,11 @@ import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
 
 const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
 
-function AdminPanel () {
+function AdminPanel() {
     const [userAddress, setUserAddress] = useState('');
     const [shouldRead, setShouldRead] = useState(false);
+    const [checkpoint, setCheckpoint] = useState(0);
+    const [depositAmount, setDepositAmount] = useState('');  // Amount of ETH to deposit
 
     const { isConnecting, isDisconnected } = useAccount({
         onConnect: ({ address, connector, isReconnected }) => {
@@ -22,6 +24,7 @@ function AdminPanel () {
         }
     });
 
+    // Register user
     const { data: writeData, isLoading, isSuccess, write } = useContractWrite({
         address: contractAddress,
         abi: VERSE_LEARN_ABI,
@@ -31,6 +34,7 @@ function AdminPanel () {
 
     const isValidAddress = userAddress.length === 42;
 
+    // Current User Checkpoint
     const { data: readData, isError, isLoading: isReading } = useContractRead({
         address: contractAddress,
         abi: VERSE_LEARN_ABI,
@@ -38,17 +42,53 @@ function AdminPanel () {
         args: isValidAddress ? [userAddress] : []
     });
 
-    console.log(Number(readData));
+    // Add a checkpoint
+    const { write: saveCheckpoint } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'checkpointSave',
+        args: [checkpoint + 1]
+    });
+
+    // Claim from Faucet
+    const { write: claimETH } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'claimETH'
+    });
+
+    // Hook for depositETH function
+    const { write: depositETH, isLoading: isDepositing } = useContractWrite({
+        address: contractAddress,
+        abi: VERSE_LEARN_ABI,
+        functionName: 'depositETH',
+        args: [],
+        value: depositAmount
+    });
 
     useEffect(() => {
-        if (isReading || isError || readData) {
-            setShouldRead(false);
+        if (readData) {
+            setCheckpoint(Number(readData));
         }
-    }, [isReading, isError, readData]);
+    }, [readData]);
 
-    const handleCheckAddress = () => {
+    const handleIncrementCheckpoint = () => {
         if (isValidAddress) {
-            setShouldRead(true);
+            saveCheckpoint();
+        }
+    };
+
+    const handleClaimETH = () => {
+        if (isValidAddress) {
+            claimETH();
+        }
+    };
+
+    const handleDepositETH = () => {
+        if (parseFloat(depositAmount) > 0) {
+            depositETH();
+        } else {
+            console.log('Invalid deposit amount');
         }
     };
 
@@ -82,13 +122,41 @@ function AdminPanel () {
             <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
                 Check a User's Checkpoint for address: {userAddress}
             </Typography>
-            <Button variant="contained" color="secondary" onClick={handleCheckAddress}>
+            <Button variant="contained" color="secondary" onClick={() => setShouldRead(true)}>
                 Check Address
             </Button>
             {isReading && <div>Loading checkpoint...</div>}
             {readData && <div>Checkpoint: {String(readData)}</div>}
+
+            <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
+                Increment Checkpoint for {userAddress}
+            </Typography>
+            <Button variant="contained" color="primary" onClick={handleIncrementCheckpoint}>
+                Increase Checkpoint by +1
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleClaimETH}>
+                Claim ETH
+            </Button>
+
+            <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
+                Deposit ETH
+            </Typography>
+            <TextField
+                fullWidth
+                label="Amount (ETH)"
+                variant="outlined"
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(e.target.value)}
+                placeholder="Enter amount of ETH"
+                margin="normal"
+                type="number"
+            />
+            <Button variant="contained" color="primary" onClick={handleDepositETH}>
+                Deposit ETH to Contract
+            </Button>
+            {isDepositing && <div>Depositing...</div>}
         </Container>
     );
-};
+}
 
 export default AdminPanel;

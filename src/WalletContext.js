@@ -60,12 +60,12 @@ export const WalletProvider = ({ children }) => {
   const tokenAddress = "0x37d4203fae62ccd7b1a78ef58a5515021ed8fd84"; 
 
   // Read
-  const currentCheckpoint = useContractRead({
-    address: contractAddress,
-    abi: contractABI,
-    functionName: 'currentCheckPoint',
-    args: [walletState.account],
-  });
+  // const currentCheckpoint = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractABI,
+  //   functionName: 'currentCheckPoint',
+  //   args: [walletState.account],
+  // });
 
   // const userPasswords = useContractRead({
   //   address: contractAddress,
@@ -125,7 +125,7 @@ export const WalletProvider = ({ children }) => {
       ...walletState, 
       connectWallet, 
       disconnectWallet,
-      currentCheckpoint: currentCheckpoint,
+      // currentCheckpoint: currentCheckpoint,
       // userPasswords: userPasswords,
       userHasClaimedETH: userHasClaimedETH,
       erc20Balance: erc20Balance,

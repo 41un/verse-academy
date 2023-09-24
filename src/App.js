@@ -1,4 +1,4 @@
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
+import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';

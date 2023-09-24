@@ -13,10 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Web3Button } from '@web3modal/react'; 
-import { useWallet } from '../../WalletContext'; 
 
 function Navbar() {
-  const { isConnected } = useWallet(); 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

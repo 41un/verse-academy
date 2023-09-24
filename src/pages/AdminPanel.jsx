@@ -78,7 +78,7 @@ function AdminPanel() {
             if (response && response.hash) {
                 console.log("Waiting for transaction to complete...");
                 const data = await waitForTransaction({ hash: response.hash });
-                console.log("Response from waitForTransaction:", data);
+                console.log("Response from waitForTransaction:", writeData);
                 
                 if (data) {
                     console.log("User registered successfully!");

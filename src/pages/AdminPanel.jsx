@@ -4,18 +4,18 @@ import {
     useContractWrite,
     useContractRead
 } from 'wagmi';
+import { waitForTransaction } from '@wagmi/core';
 import { Button, TextField, Container, Typography } from '@mui/material';
 import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
 
 const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
 
 function AdminPanel() {
-    const [userAddress, setUserAddress] = useState('');
     const [shouldRead, setShouldRead] = useState(false);
     const [checkpoint, setCheckpoint] = useState(0);
     const [depositAmount, setDepositAmount] = useState('');  // Amount of ETH to deposit
 
-    const { isConnecting, isDisconnected } = useAccount({
+    const { address, isConnecting, isDisconnected } = useAccount({
         onConnect: ({ address, connector, isReconnected }) => {
             console.log('Connected', { address, connector, isReconnected });
         },
@@ -29,17 +29,15 @@ function AdminPanel() {
         address: contractAddress,
         abi: VERSE_LEARN_ABI,
         functionName: 'registerUser',
-        args: [userAddress]
+        args: [address]
     });
-
-    const isValidAddress = userAddress.length === 42;
 
     // Current User Checkpoint
     const { data: readData, isError, isLoading: isReading } = useContractRead({
         address: contractAddress,
         abi: VERSE_LEARN_ABI,
         functionName: 'currentCheckPoint',
-        args: isValidAddress ? [userAddress] : []
+        args: [address]
     });
 
     // Add a checkpoint
@@ -72,16 +70,35 @@ function AdminPanel() {
         }
     }, [readData]);
 
-    const handleIncrementCheckpoint = () => {
-        if (isValidAddress) {
-            saveCheckpoint();
+    const handleIncrementCheckpoint = async () => {
+        try {
+            console.log("Calling saveCheckpoint...");
+            const response = await saveCheckpoint();
+            console.log("Response from saveCheckpoint:", response);
+            
+            if (response && response.hash) {
+                console.log("Waiting for transaction to complete...");
+                const data = await waitForTransaction({ hash: response.hash });
+                console.log("Response from waitForTransaction:", data);
+                
+                if (data) {
+                    setCheckpoint(prevCheckpoint => prevCheckpoint + 1);
+                    console.log("Checkpoint incremented successfully!");
+                } else {
+                    console.error("No data received after waiting for transaction.");
+                }
+            } else {
+                console.error("No transaction hash received from saveCheckpoint.");
+            }
+        } catch (error) {
+            console.error("Error incrementing checkpoint:", error);
         }
     };
+    
+    
 
     const handleClaimETH = () => {
-        if (isValidAddress) {
-            claimETH();
-        }
+        claimETH();
     };
 
     const handleDepositETH = () => {
@@ -109,7 +126,6 @@ function AdminPanel() {
         }
     };
 
-
     if (isConnecting) return <div>Connecting…</div>;
     if (isDisconnected) return <div>Disconnected</div>;
 
@@ -119,26 +135,8 @@ function AdminPanel() {
                 Admin Panel
             </Typography>
 
-            <Typography variant="h6" gutterBottom>
-                Register a User
-            </Typography>
-            <TextField
-                fullWidth
-                label="User Address"
-                variant="outlined"
-                value={userAddress}
-                onChange={(e) => setUserAddress(e.target.value)}
-                placeholder="Enter Ethereum address"
-                margin="normal"
-            />
-            <Button variant="contained" color="primary" onClick={() => write()}>
-                Register User
-            </Button>
-            {isLoading && <div>Check Wallet</div>}
-            {isSuccess && <div>Transaction: {JSON.stringify(writeData)}</div>}
-
             <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
-                Check a User's Checkpoint for address: {userAddress}
+                Check a User's Checkpoint for address: {address}
             </Typography>
             <Button variant="contained" color="secondary" onClick={() => setShouldRead(true)}>
                 Check Address
@@ -147,7 +145,7 @@ function AdminPanel() {
             {readData && <div>Checkpoint: {String(readData)}</div>}
 
             <Typography variant="h6" gutterBottom style={{ marginTop: '20px' }}>
-                Increment Checkpoint for {userAddress}
+                Increment Checkpoint for {address}
             </Typography>
             <Button variant="contained" color="primary" onClick={handleIncrementCheckpoint}>
                 Increase Checkpoint by +1

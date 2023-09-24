@@ -12,12 +12,12 @@ import {
     useContractWrite,
     useContractRead
 } from 'wagmi';
+import { waitForTransaction } from '@wagmi/core';
 import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
 
 const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
 
 function Lesson() {
-    const [userAddress, setUserAddress] = useState('');
     const [checkpoint, setCheckpoint] = useState(0);
     const [depositAmount, setDepositAmount] = useState('');  // Amount of ETH to deposit
 
@@ -40,10 +40,8 @@ function Lesson() {
     const [lottieSize, setLottieSize] = useState({ width: 400, height: 400 });
 
     // Web3 Functions
-    const isValidAddress = userAddress.length === 42;
 
-
-    const { isConnecting, isDisconnected } = useAccount({
+    const { address, isConnecting, isDisconnected } = useAccount({
         onConnect: ({ address, connector, isReconnected }) => {
             console.log('Connected', { address, connector, isReconnected });
         },
@@ -52,12 +50,15 @@ function Lesson() {
         }
     });
 
+    // const isValidAddress = address.length === 42;
+
+
     // Current User Checkpoint
     const { data: readData, isError, isLoading: isReading } = useContractRead({
         address: contractAddress,
         abi: VERSE_LEARN_ABI,
         functionName: 'currentCheckPoint',
-        args: isValidAddress ? [userAddress] : []
+        args: [address]
     });
 
     // Add a checkpoint
@@ -83,13 +84,13 @@ function Lesson() {
     }, [readData]);
 
     const handleIncrementCheckpoint = () => {
-        if (isValidAddress) {
+        if (address) {
             saveCheckpoint();
         }
     };
 
     const handleClaimETH = () => {
-        if (isValidAddress) {
+        if (address) {
             claimETH();
         }
     };
@@ -275,9 +276,9 @@ function Lesson() {
                         color="primary"
                         sx={{ marginTop: '40px', width: '100%' }}
                         onClick={handleSubmit}
-                        disabled={!isAllAnswered || isDisconnected}
+                        disabled={!isAllAnswered || !address}
                     >
-                        {isAllAnswered && isDisconnected ? "Connect your wallet" : "Submit Answers"}
+                        {isAllAnswered && !address ? "Connect your wallet" : "Submit Answers"}
                     </Button>
                 </div>
             </Paper>

@@ -82,9 +82,16 @@ function Lesson() {
 
     const handleIncrementCheckpoint = () => {
         if (address) {
-            saveCheckpoint();
+            // Increment the checkpoint only if it's less than the current lessonId.
+            // Note: This assumes that lessons are taken in sequence (i.e., a user can't skip from lesson 1 to lesson 3 without taking lesson 2).
+            if (checkpoint < parseInt(lessonId, 10)) {
+                saveCheckpoint();
+            } else {
+                console.log(`User has already incremented checkpoint for lesson ${lessonId}.`);
+            }
         }
     };
+    
 
     const handleClaimETH = () => {
         if (address) {

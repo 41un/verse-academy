@@ -50,9 +50,6 @@ function Lesson() {
         }
     });
 
-    // const isValidAddress = address.length === 42;
-
-
     // Current User Checkpoint
     const { data: readData, isError, isLoading: isReading } = useContractRead({
         address: contractAddress,
@@ -190,17 +187,19 @@ function Lesson() {
                 count++;
             }
         });
-
+    
         setCorrectCount(count);
         setSubmittedAnswers(answers);
-
+    
         if (count === lesson.quiz.length) {
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 5000);
+            handleIncrementCheckpoint(); 
         }
-
+    
         setShowModal(true);
     };
+    
 
     const modalStyle = {
         display: 'flex',

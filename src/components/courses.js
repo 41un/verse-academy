@@ -11,7 +11,7 @@ const courses = [
                 id: 1,
                 title: "Welcome to the course",
                 description: "Lorem ipsum dolor sit amet...",
-                vimeoId: 867763452,
+                vimeoId: 810517054,
                 quiz: [
                     {
                         question: "What does DApp stand for?",
@@ -59,7 +59,7 @@ const courses = [
                 id: 2,
                 title: "What is VERSE?",
                 description: "Learn all about VERSE, the rewards and utility token of Bitcoin.com",
-                vimeoId: 866666771,
+                vimeoId: 810517054,
                 quiz: [
                     {
                         question: "What does the term \"self-custodial\" mean in the context of cryptocurrency?",

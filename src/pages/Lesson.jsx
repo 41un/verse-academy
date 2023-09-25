@@ -94,8 +94,6 @@ function Lesson() {
 
     const handleIncrementCheckpoint = () => {
         if (address) {
-            // Increment the checkpoint only if it's less than the current lessonId.
-            // Note: This assumes that lessons are taken in sequence (i.e., a user can't skip from lesson 1 to lesson 3 without taking lesson 2).
             if (checkpoint < parseInt(lessonId, 10)) {
                 saveCheckpoint();
             } else {
@@ -106,13 +104,13 @@ function Lesson() {
     
 
     const handleClaimETH = async () => {
-        if (address && !ethClaimed) { // Check if ETH hasn't been claimed yet
+        if (address && !ethClaimed) { 
             try {
                 await claimETH();
-                setEthClaimed(true); // Mark ETH as claimed
+                setEthClaimed(true); 
             } catch (error) {
                 console.error(error);
-                setClaimETHError(error.message); // Set the error message
+                setClaimETHError(error.message);
             }
         }
     };
@@ -251,7 +249,7 @@ function Lesson() {
             {showConfetti && (
                 <Confetti width={dimensions.width} height={dimensions.height} numberOfPieces={1000} style={{ position: 'fixed', top: 0, left: 0, zIndex: 1000 }} />
             )}
-            <Paper elevation={3} style={{ padding: '20px', width: '100%', maxWidth: '800px' }}>
+            <Paper elevation={3} style={{ padding: '20px', width: '100%', maxWidth: '800px', color: 'white', backgroundColor: 'rgba(4, 12, 31, 0.7)',         boxShadow: '0 0 30px 10px rgba(39, 147, 255, 0.6)' }}>
                 <LinearProgress variant="determinate" value={userProgress} style={{ marginBottom: '20px', padding: '10px', borderRadius: '7px' }} />
                 <Button
                     variant="contained"

@@ -12,7 +12,6 @@ import {
     useContractWrite,
     useContractRead
 } from 'wagmi';
-import { waitForTransaction } from '@wagmi/core';
 import VERSE_LEARN_ABI from '../abi/VerseLearnABI.json';
 
 const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
@@ -40,13 +39,12 @@ function Lesson() {
     const [submittedAnswers, setSubmittedAnswers] = useState(null);
     const [lottieSize, setLottieSize] = useState({ width: 400, height: 400 });
     const [ethClaimed, setEthClaimed] = useState(false);
-    const [claimETHError, setClaimETHError] = useState(null);
 
 
 
     // Web3 Functions
 
-    const { address, isConnecting, isDisconnected } = useAccount({
+    const { address } = useAccount({
         onConnect: ({ address, connector, isReconnected }) => {
             console.log('Connected', { address, connector, isReconnected });
         },
@@ -56,7 +54,7 @@ function Lesson() {
     });
 
     // Current User Checkpoint
-    const { data: readData, isError, isLoading: isReading } = useContractRead({
+    const { data: readData, isLoading: isReading } = useContractRead({
         address: contractAddress,
         abi: VERSE_LEARN_ABI,
         functionName: 'currentCheckPoint',
@@ -110,7 +108,6 @@ function Lesson() {
                 setEthClaimed(true); 
             } catch (error) {
                 console.error(error);
-                setClaimETHError(error.message);
             }
         }
     };

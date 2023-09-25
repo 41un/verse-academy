@@ -253,7 +253,7 @@
                             onStart={() => setIsLoadingVideo(false)}
                         />
                     </div>
-                    {parseInt(lessonId, 10) === 1 && (
+                    {parseInt(lessonId, 10) === 2 && (
                             <Button 
                                 variant="contained"
                                 color="secondary"

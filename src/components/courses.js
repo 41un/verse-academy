@@ -11,7 +11,7 @@ const courses = [
                 id: 1,
                 title: "Welcome to the course",
                 description: "Lorem ipsum dolor sit amet...",
-                vimeoId: 866666771,
+                vimeoId: 867763452,
                 quiz: [
                     {
                         question: "What does DApp stand for?",

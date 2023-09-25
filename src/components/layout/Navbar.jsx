@@ -33,27 +33,26 @@ function Navbar() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
   return (
     <>
       {isMobile ? (
-        <AppBar position='fixed' color='default'>
+        <AppBar position='fixed' sx={{ backgroundColor: '#040B13' }}>
           <Toolbar sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <IconButton edge='start' color='inherit' aria-label='menu' onClick={toggleMenu}>
+            <IconButton edge='start' color='inherit' aria-label='menu' onClick={toggleMenu} sx={{ color: '#FFFFFF' }}>
               <MenuIcon />
             </IconButton>
-            <Web3Button /> 
-            <div style={{ width: 48 }} /> 
+            <Web3Button />
+            <div style={{ width: 48 }} />
           </Toolbar>
-          <Drawer anchor='left' open={isMenuOpen} onClose={closeMenu}>
-            <List sx={{ width: 250 }}>
+          <Drawer anchor='left' open={isMenuOpen} onClose={closeMenu} PaperProps={{ style: { backgroundColor: '#040B13' } }}>
+            <List sx={{ width: 250, backgroundColor: '#040B13', color: '#FFFFFF' }}>
               {menuItems.map((item, index) => (
-                <Link key={index} to={item.link} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <ListItem button onClick={closeMenu} sx={{ '&:hover': { backgroundColor: theme.palette.action.hover } }}>
+                <Link key={index} to={item.link} style={{ textDecoration: 'none', color: '#FFFFFF' }}>
+                  <ListItem button onClick={closeMenu} sx={{ '&:hover': { backgroundColor: '#1A2B3A' } }}>
                     <ListItemText primary={item.label} />
                   </ListItem>
                 </Link>
@@ -62,13 +61,13 @@ function Navbar() {
           </Drawer>
         </AppBar>
       ) : (
-        <AppBar position='fixed' color='default'>
+        <AppBar position='fixed' sx={{ backgroundColor: '#040B13' }}>
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {menuItems.map((item, index) => (
                 <Link key={index} to={item.link} style={{
                   textDecoration: 'none',
-                  color: 'inherit',
+                  color: '#FFFFFF',
                   marginRight: theme.spacing(2),
                   '&:hover': {
                     textDecoration: 'none',
@@ -79,7 +78,7 @@ function Navbar() {
                 </Link>
               ))}
             </div>
-            <Web3Button /> 
+            <Web3Button />
           </Toolbar>
         </AppBar>
       )}

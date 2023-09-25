@@ -72,7 +72,7 @@ function HowItWorks() {
                         Earn Rewards
                     </Typography>
                     <Typography variant="body1">
-                        Successfully completed challenges earn you rewards!
+                        Earn while you learn!
                     </Typography>
                 </Grid>
             </Grid>

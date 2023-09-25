@@ -85,8 +85,6 @@ function AdminPanel() {
                 } else {
                     console.error("No data received after waiting for transaction.");
                 }
-            } else {
-                console.error("No transaction hash received from registerUser.");
             }
         } catch (error) {
             console.error("Error registering user:", error);

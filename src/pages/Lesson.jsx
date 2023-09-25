@@ -262,7 +262,7 @@ function Lesson() {
                 </Button>
                 <Typography variant="h4">{lesson.title}</Typography>
                 <Typography variant="body1" paragraph>{lesson.description}</Typography>
-                <div style={{ flexBasis: '50%', overflow: 'hidden', width: '100%', position: 'relative' }}>
+                <div style={{ flexBasis: '50%', overflow: 'hidden', width: '100%', position: 'relative', marginBottom: '60px' }}>
                     {isLoadingVideo && (
                         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                             <CircularProgress />
@@ -291,42 +291,66 @@ function Lesson() {
                     </Button>
                     )}
                 <div>
-                    <Typography variant="h5" gutterBottom>Quiz</Typography>
+                    {/* <Typography variant="h5" gutterBottom>Quiz</Typography> */}
                     {lesson.quiz.map((q, index) => (
-                        <div 
-                            key={index} 
-                            style={{
-                                backgroundColor: submittedAnswers && submittedAnswers[index] === q.correctAnswer ? 'lightgreen' : 
-                                                submittedAnswers && submittedAnswers[index] !== q.correctAnswer ? 'lightcoral' : 'transparent',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                margin: '5px 0'
+    <div 
+        key={index} 
+        style={{
+            backgroundColor: submittedAnswers && submittedAnswers[index] === q.correctAnswer ? 'lightgreen' : 
+                            submittedAnswers && submittedAnswers[index] !== q.correctAnswer ? 'lightcoral' : 'transparent',
+            padding: '10px',
+            borderRadius: '5px',
+            margin: '5px 0'
+        }}
+    >
+        <Typography sx={{ fontWeight: '700' }} variant="h6" gutterBottom>{q.question}</Typography>
+        <FormControl component="fieldset">
+            <RadioGroup
+                aria-label={`q${index}`}
+                name={`q${index}`}
+                value={answers[index] || ''}
+                onChange={(event) => handleOptionChange(index, event)}
+            >
+                {q.options.map((option, i) => (
+                    <FormControlLabel 
+                    key={i}
+                    value={option}
+                    control={
+                        <Radio 
+                            color="primary" 
+                            sx={{
+                                '&.Mui-checked': {  // Style for the checked state
+                                    color: '#2793FF'  // Assuming 'primary' is a color in your theme
+                                },
+                                '&.MuiRadio-root': {  // Style for the default (unchecked) state
+                                    color: '#2793FF'
+                                }
                             }}
-                        >
-                            <Typography variant="h6" gutterBottom>{q.question}</Typography>
-                            <FormControl component="fieldset">
-                                <RadioGroup
-                                    aria-label={`q${index}`}
-                                    name={`q${index}`}
-                                    value={answers[index] || ''}
-                                    onChange={(event) => handleOptionChange(index, event)}
-                                >
-                                    {q.options.map((option, i) => (
-                                        <FormControlLabel 
-                                            key={i}
-                                            value={option}
-                                            control={<Radio color="primary" />}
-                                            label={option}
-                                        />
-                                    ))}
-                                </RadioGroup>
-                            </FormControl>
-                        </div>
-                    ))}
+                        />
+                    }
+                    label={option}
+                />
+                
+                ))}
+            </RadioGroup>
+        </FormControl>
+    </div>
+))}
+
                     <Button 
                         variant="contained"
-                        color="primary"
-                        sx={{ marginTop: '40px', width: '100%' }}
+                        sx={{ 
+                            padding: '5px',
+                            backgroundColor: '#2793FF',
+                            borderRadius: '12px',
+                            margin: '20px 0', 
+                            width: '100%', 
+                            '&:disabled': {
+                                backgroundColor: 'transparent', 
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                color: 'rgba(255, 255, 255, 0.7)' 
+                            }
+                        }}
                         onClick={handleSubmit}
                         disabled={!isAllAnswered || !address}
                     >

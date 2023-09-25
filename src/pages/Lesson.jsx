@@ -271,7 +271,7 @@
                             color="secondary"
                             sx={{ marginTop: '10px', marginBottom: '20px' }}
                             onClick={handleClaimETH}
-                            disabled={ethClaimed} // Disable the button when ETH is claimed
+                            disabled={ethClaimed} 
                         >
                             {ethClaimed ? "You've claimed your Gas" : "Claim Gas"}
                         </Button>

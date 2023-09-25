@@ -20,7 +20,7 @@ const { publicClient } = configureChains(
     [
         infuraProvider(
             {
-                apiKey: 'b5cade57b5984317bf3ee8b17f841b4e'
+                apiKey: process.env.INFURA_KEY
             }
         ),
         // alchemyProvider(

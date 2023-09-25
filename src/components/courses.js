@@ -103,6 +103,198 @@ const courses = [
                     }
                 ]
             },
+            {
+                id: 3,
+                title: "What is VERSE?",
+                description: "Learn all about VERSE, the rewards and utility token of Bitcoin.com",
+                vimeoId: 867846774,
+                quiz: [
+                    {
+                        question: "What does the term \"self-custodial\" mean in the context of cryptocurrency?",
+                        options: [
+                            "The bank has custody of your funds.",
+                            "You rely on a third-party service to manage your funds.",
+                            "You and you alone have custody of your funds.",
+                            "The government has custody of your funds."
+                        ],
+                        correctAnswer: "You and you alone have custody of your funds."
+                    },
+                    {
+                        question: "What is one of the challenges VERSE aims to address in the cryptocurrency space?",
+                        options: [
+                            "High volatility of Bitcoin.",
+                            "Onboarding new users to self-custodial and decentralized tools.",
+                            "Replacing traditional financial systems.",
+                            "Becoming a competitor to Bitcoin."
+                        ],
+                        correctAnswer: "Onboarding new users to self-custodial and decentralized tools."
+                    },
+                    {
+                        question: "What is the primary purpose of VERSE tokens in the Bitcoin.com ecosystem?",
+                        options: [
+                            "It's used for mining Bitcoin.",
+                            "It serves as a rewards and utility cryptocurrency.",
+                            "It's the native token for the Bitcoin.com Card.",
+                            "It's used to vote on governance proposals."
+                        ],
+                        correctAnswer: "It serves as a rewards and utility cryptocurrency."
+                    },
+                    {
+                        question: "Besides being a rewards token, how else can VERSE be used in the Bitcoin.com ecosystem?",
+                        options: [
+                            "It can be used to mine other cryptocurrencies.",
+                            "It's used to pay for advertising on Bitcoin.com's news site.",
+                            "It can be converted to Bitcoin automatically.",
+                            "It's primarily used for tipping content creators."
+                        ],
+                        correctAnswer: "It's used to pay for advertising on Bitcoin.com's news site."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Smart Contracts",
+                description: "Learn about smart contracts, how to interact with them, and an example of using a smart contract in a DApp.",
+                vimeoId: 867854595,
+                quiz: [
+                    {
+                        question: "What is a smart contract?",
+                        options: [
+                            "A paper-based legal agreement.",
+                            "A computer program stored on centralized servers.",
+                            "A computer program stored on a decentralized network like blockchains.",
+                            "A special type of email sent over encrypted networks."
+                        ],
+                        correctAnswer: "A computer program stored on a decentralized network like blockchains."
+                    },
+                    {
+                        question: "Decentralized Applications (DApps) are:",
+                        options: [
+                            "Not related to smart contracts.",
+                            "Made up of two or more smart contracts.",
+                            "Independent of smart contracts.",
+                            "Made up of one or more smart contracts."
+                        ],
+                        correctAnswer: "Made up of one or more smart contracts."
+                    },
+                    {
+                        question: "For the majority of users, how do they interact with smart contracts?",
+                        options: [
+                            "Directly modifying the contract's code.",
+                            "Through cloud computing interfaces.",
+                            "Via DApps.",
+                            "By emailing the blockchain administrators."
+                        ],
+                        correctAnswer: "Via DApps."
+                    },
+                    {
+                        question: "When interacting with most smart contracts, what is typically a step a user will undertake?",
+                        options: [
+                            "Paying for cloud storage.",
+                            "Authorizing the use of their wallet's assets.",
+                            "Registering their computer's IP address.",
+                            "Downloading the entire blockchain."
+                        ],
+                        correctAnswer: "Authorizing the use of their wallet's assets."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Smart Contracts",
+                description: "Learn about smart contracts, how to interact with them, and an example of using a smart contract in a DApp.",
+                vimeoId: 867854595,
+                quiz: [
+                    {
+                        question: "What is a smart contract?",
+                        options: [
+                            "A paper-based legal agreement.",
+                            "A computer program stored on centralized servers.",
+                            "A computer program stored on a decentralized network like blockchains.",
+                            "A special type of email sent over encrypted networks."
+                        ],
+                        correctAnswer: "A computer program stored on a decentralized network like blockchains."
+                    },
+                    {
+                        question: "Decentralized Applications (DApps) are:",
+                        options: [
+                            "Not related to smart contracts.",
+                            "Made up of two or more smart contracts.",
+                            "Independent of smart contracts.",
+                            "Made up of one or more smart contracts."
+                        ],
+                        correctAnswer: "Made up of one or more smart contracts."
+                    },
+                    {
+                        question: "For the majority of users, how do they interact with smart contracts?",
+                        options: [
+                            "Directly modifying the contract's code.",
+                            "Through cloud computing interfaces.",
+                            "Via DApps.",
+                            "By emailing the blockchain administrators."
+                        ],
+                        correctAnswer: "Via DApps."
+                    },
+                    {
+                        question: "When interacting with most smart contracts, what is typically a step a user will undertake?",
+                        options: [
+                            "Paying for cloud storage.",
+                            "Authorizing the use of their wallet's assets.",
+                            "Registering their computer's IP address.",
+                            "Downloading the entire blockchain."
+                        ],
+                        correctAnswer: "Authorizing the use of their wallet's assets."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "Smart Contracts",
+                description: "Learn about smart contracts, how to interact with them, and an example of using a smart contract in a DApp.",
+                vimeoId: 867854595,
+                quiz: [
+                    {
+                        question: "What is a smart contract?",
+                        options: [
+                            "A paper-based legal agreement.",
+                            "A computer program stored on centralized servers.",
+                            "A computer program stored on a decentralized network like blockchains.",
+                            "A special type of email sent over encrypted networks."
+                        ],
+                        correctAnswer: "A computer program stored on a decentralized network like blockchains."
+                    },
+                    {
+                        question: "Decentralized Applications (DApps) are:",
+                        options: [
+                            "Not related to smart contracts.",
+                            "Made up of two or more smart contracts.",
+                            "Independent of smart contracts.",
+                            "Made up of one or more smart contracts."
+                        ],
+                        correctAnswer: "Made up of one or more smart contracts."
+                    },
+                    {
+                        question: "For the majority of users, how do they interact with smart contracts?",
+                        options: [
+                            "Directly modifying the contract's code.",
+                            "Through cloud computing interfaces.",
+                            "Via DApps.",
+                            "By emailing the blockchain administrators."
+                        ],
+                        correctAnswer: "Via DApps."
+                    },
+                    {
+                        question: "When interacting with most smart contracts, what is typically a step a user will undertake?",
+                        options: [
+                            "Paying for cloud storage.",
+                            "Authorizing the use of their wallet's assets.",
+                            "Registering their computer's IP address.",
+                            "Downloading the entire blockchain."
+                        ],
+                        correctAnswer: "Authorizing the use of their wallet's assets."
+                    }
+                ]
+            }
         ]
     },
 ]

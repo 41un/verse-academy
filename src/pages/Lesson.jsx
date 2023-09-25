@@ -249,29 +249,29 @@ function Lesson() {
             {showConfetti && (
                 <Confetti width={dimensions.width} height={dimensions.height} numberOfPieces={1000} style={{ position: 'fixed', top: 0, left: 0, zIndex: 1000 }} />
             )}
-            <Paper elevation={3} style={{ padding: '20px', width: '100%', maxWidth: '800px', color: 'white', backgroundColor: 'rgba(4, 12, 31, 0.7)',         boxShadow: '0 0 30px 10px rgba(39, 147, 255, 0.6)' }}>
-            <div style={{ position: 'relative', marginBottom: '30px' }}>
-                <LinearProgress 
-                    variant="determinate" 
-                    value={userProgress} 
-                    style={{ marginBottom: '20px', padding: '10px', borderRadius: '7px' }}
-                    sx={{ '& .MuiLinearProgress-barColorPrimary': { backgroundColor: '#2793FF' }}} 
-                />
-                <Button
-                    variant="contained"
-                    sx={{ 
-                        backgroundColor: '#2793FF', 
-                        position: 'absolute', 
-                        top: '50%', 
-                        transform: 'translateY(-50%)', 
-                        right: 0 
-                    }}
-                    onClick={handleClaimReward}
-                    disabled={!isRewardButtonEnabled}
-                >
-                    Claim Reward
-                </Button>
-            </div>
+            <Paper elevation={3} style={{ padding: '20px', width: '100%', maxWidth: '800px', color: 'white', backgroundColor: 'rgba(4, 12, 21, 0.7)', boxShadow: '0 0 10px 5px rgba(39, 147, 255, 0.2)' }}>            
+                <div style={{ position: 'relative', marginBottom: '30px' }}>
+                    <LinearProgress 
+                        variant="determinate" 
+                        value={userProgress} 
+                        style={{ marginBottom: '20px', padding: '10px', borderRadius: '7px' }}
+                        sx={{ '& .MuiLinearProgress-barColorPrimary': { backgroundColor: '#2793FF' }}} 
+                    />
+                    <Button
+                        variant="contained"
+                        sx={{ 
+                            backgroundColor: '#2793FF', 
+                            position: 'absolute', 
+                            top: '50%', 
+                            transform: 'translateY(-50%)', 
+                            right: 0 
+                        }}
+                        onClick={handleClaimReward}
+                        disabled={!isRewardButtonEnabled}
+                    >
+                        Claim Reward
+                    </Button>
+                </div>
 
 
                 <Typography variant="h4">{lesson.title}</Typography>

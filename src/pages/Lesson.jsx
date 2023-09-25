@@ -254,18 +254,25 @@ function Lesson() {
                 <LinearProgress 
                     variant="determinate" 
                     value={userProgress} 
-                    style={{ marginBottom: '20px', padding: '10px', borderRadius: '7px' }} 
+                    style={{ marginBottom: '20px', padding: '10px', borderRadius: '7px' }}
+                    sx={{ '& .MuiLinearProgress-barColorPrimary': { backgroundColor: '#2793FF' }}} 
                 />
                 <Button
                     variant="contained"
-                    color="primary"
-                    sx={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: 0 }}
+                    sx={{ 
+                        backgroundColor: '#2793FF', 
+                        position: 'absolute', 
+                        top: '50%', 
+                        transform: 'translateY(-50%)', 
+                        right: 0 
+                    }}
                     onClick={handleClaimReward}
                     disabled={!isRewardButtonEnabled}
                 >
                     Claim Reward
                 </Button>
             </div>
+
 
                 <Typography variant="h4">{lesson.title}</Typography>
                 <Typography variant="body1" paragraph>{lesson.description}</Typography>
@@ -298,48 +305,46 @@ function Lesson() {
                     </Button>
                     )}
                 <div>
-                    {/* <Typography variant="h5" gutterBottom>Quiz</Typography> */}
                     {lesson.quiz.map((q, index) => (
-    <div 
-        key={index} 
-        style={{
-            backgroundColor: submittedAnswers && submittedAnswers[index] === q.correctAnswer ? 'lightgreen' : 
-                            submittedAnswers && submittedAnswers[index] !== q.correctAnswer ? 'lightcoral' : 'transparent',
-            padding: '10px',
-            borderRadius: '5px',
-            margin: '5px 0'
-        }}
-    >
+                <div 
+                    key={index} 
+                    style={{
+                        padding: '10px',
+                        borderRadius: '5px',
+                        margin: '5px 0'
+                    }}
+                >
         <Typography sx={{ fontWeight: '700' }} variant="h6" gutterBottom>{q.question}</Typography>
         <FormControl component="fieldset">
-            <RadioGroup
-                aria-label={`q${index}`}
-                name={`q${index}`}
-                value={answers[index] || ''}
-                onChange={(event) => handleOptionChange(index, event)}
-            >
-                {q.options.map((option, i) => (
-                    <FormControlLabel 
-                    key={i}
-                    value={option}
-                    control={
-                        <Radio 
-                            color="primary" 
-                            sx={{
-                                '&.Mui-checked': {  // Style for the checked state
-                                    color: '#2793FF'  // Assuming 'primary' is a color in your theme
-                                },
-                                '&.MuiRadio-root': {  // Style for the default (unchecked) state
-                                    color: '#2793FF'
-                                }
-                            }}
-                        />
-                    }
-                    label={option}
+        <RadioGroup
+    aria-label={`q${index}`}
+    name={`q${index}`}
+    value={answers[index] || ''}
+    onChange={(event) => handleOptionChange(index, event)}
+>
+    {q.options.map((option, i) => (
+        <FormControlLabel 
+            key={i}
+            value={option}
+            control={
+                <Radio 
+                    sx={{
+                        '&.Mui-checked': {
+                            color: submittedAnswers && submittedAnswers[index] === q.correctAnswer ? 'lightgreen' : 
+                                submittedAnswers && submittedAnswers[index] !== q.correctAnswer ? 'coral' : '#2793FF',
+                        },
+                        '&.MuiRadio-root': {
+                            color: submittedAnswers && submittedAnswers[index] === q.correctAnswer ? 'lightgreen' : 
+                                submittedAnswers && submittedAnswers[index] !== q.correctAnswer ? 'coral' : '#2793FF',
+                        },
+                    }}
                 />
-                
-                ))}
-            </RadioGroup>
+            }
+            label={option}
+        />
+    ))}
+</RadioGroup>
+
         </FormControl>
     </div>
 ))}

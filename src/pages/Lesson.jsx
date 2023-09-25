@@ -163,6 +163,8 @@ function Lesson() {
             clearInterval(progressTimer);
         };
     }, [correctCount, lesson.quiz.length, showNextButton]);
+
+    const isRewardButtonEnabled = userProgress >= 100;
     
     
 
@@ -251,6 +253,7 @@ function Lesson() {
             )}
             <Paper elevation={3} style={{ padding: '20px', width: '100%', maxWidth: '800px' }}>
                 <LinearProgress variant="determinate" value={userProgress} style={{ marginBottom: '20px', padding: '10px', borderRadius: '7px' }} />
+                <Button variant="contained" color="primary" sx={{ marginTop: '20px' }} onClick={handleClaimReward} disabled={!isRewardButtonEnabled}>{isRewardButtonEnabled ? 'Claim Reward' : 'Complete course to claim'}</Button>
                 <Typography variant="h4">{lesson.title}</Typography>
                 <Typography variant="body1" paragraph>{lesson.description}</Typography>
                 <div style={{ flexBasis: '50%', overflow: 'hidden', width: '100%', position: 'relative' }}>

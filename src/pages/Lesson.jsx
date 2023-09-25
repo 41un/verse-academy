@@ -39,6 +39,10 @@
         const [showNextButton, setShowNextButton] = useState(false);
         const [submittedAnswers, setSubmittedAnswers] = useState(null);
         const [lottieSize, setLottieSize] = useState({ width: 400, height: 400 });
+        const [ethClaimed, setEthClaimed] = useState(false);
+        const [claimETHError, setClaimETHError] = useState(null);
+
+
 
         // Web3 Functions
 
@@ -101,12 +105,17 @@
         };
         
 
-        const handleClaimETH = () => {
-            if (address) {
-                claimETH();
+        const handleClaimETH = async () => {
+            if (address && !ethClaimed) { // Check if ETH hasn't been claimed yet
+                try {
+                    await claimETH();
+                    setEthClaimed(true); // Mark ETH as claimed
+                } catch (error) {
+                    console.error(error);
+                    setClaimETHError(error.message); // Set the error message
+                }
             }
         };
-
 
         // User claims VERSE reward
         const { write: claimReward, isLoading: isClaiming, isSuccess: rewardSuccess } = useContractWrite({
@@ -214,6 +223,9 @@
         
             setShowModal(true);
         };
+    
+        
+        
         
 
         const modalStyle = {
@@ -254,14 +266,15 @@
                         />
                     </div>
                     {parseInt(lessonId, 10) === 2 && (
-                            <Button 
-                                variant="contained"
-                                color="secondary"
-                                sx={{ marginTop: '10px', marginBottom: '20px' }}
-                                onClick={handleClaimETH}
-                            >
-                                Claim ETH from Faucet
-                            </Button>
+                        <Button 
+                            variant="contained"
+                            color="secondary"
+                            sx={{ marginTop: '10px', marginBottom: '20px' }}
+                            onClick={handleClaimETH}
+                            disabled={ethClaimed} // Disable the button when ETH is claimed
+                        >
+                            {ethClaimed ? "You've claimed your Gas" : "Claim Gas"}
+                        </Button>
                         )}
                     <div>
                         <Typography variant="h5" gutterBottom>Quiz</Typography>

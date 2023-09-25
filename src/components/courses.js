@@ -3,8 +3,8 @@ const courses = [
         id: 1,
         title: "Crypto 101",
         description: "Get up to speed on decentralized applications, smart contracts, and tokens.",
-        imgSrc: "../img/course-images/1.png",
-        earnings: "Earn $5",
+        imgSrc: "1",
+        earnings: "Earn 1000 $VERSE",
         difficulty: "Easy",
         lessons: [
             {

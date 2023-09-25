@@ -22,8 +22,8 @@ function Navbar() {
 
   const menuItems = [
     { link: '/', label: 'Home' },
-    { link: '/courses', label: 'Courses' },
-    { link: '/about', label: 'About' },
+    { link: '/courses/1', label: 'Crypto 101' },
+    // { link: '/about', label: 'About' },
   ];
 
   const toggleMenu = () => {

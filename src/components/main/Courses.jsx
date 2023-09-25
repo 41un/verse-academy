@@ -95,11 +95,11 @@ function Courses() {
                     </Grid>
                 ))}
             </Grid>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
             <Button variant="contained" sx={{ backgroundColor: '#2793FF'}} > 
                 View all
             </Button>
-            </div>
+            </div> */}
         </div>
     );
 }

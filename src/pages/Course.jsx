@@ -28,7 +28,6 @@ function Course() {
                         <Link to={`/courses/${courseId}/lessons/1`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Button 
                                 variant="contained" 
-                                color="primary" 
                                 size="large"
                                 sx={{ backgroundColor: '#2793FF', borderRadius: '12px' }}
                             >
@@ -52,13 +51,15 @@ function Course() {
                     />
                     {isMobile && (
                         <div style={{ marginTop: 25, textAlign: 'center' }}>
-                            <Button 
-                                variant="contained" 
-                                color="primary" 
-                                size="large"
-                            >
-                                Start earning
-                            </Button>
+                            <Link to={`/courses/${courseId}/lessons/1`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Button 
+                                    variant="contained" 
+                                    size="large"
+                                    sx={{ backgroundColor: '#2793FF', borderRadius: '12px' }}
+                                >
+                                    Start course
+                                </Button>
+                            </Link>
                         </div>
                     )}
                 </Grid>

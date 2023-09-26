@@ -173,6 +173,17 @@ function AdminPanel() {
                 onChange={(e) => setUserToRegister(e.target.value)}
                 placeholder="Enter address to register"
                 margin="normal"
+                InputProps={{
+                    style: {
+                        backgroundColor: 'white',
+                        color: 'black'
+                    }
+                }}
+                InputLabelProps={{
+                    style: {
+                        color: 'black'
+                    }
+                }}            
             />
             <Button variant="contained" color="primary" onClick={handleRegisterUser}>
                 Register User
@@ -210,6 +221,18 @@ function AdminPanel() {
                 placeholder="Enter amount of ETH"
                 margin="normal"
                 type="number"
+                InputProps={{
+                    style: {
+                        backgroundColor: 'white',
+                        color: 'black'
+                    }
+                }}
+                InputLabelProps={{
+                    style: {
+                        color: 'black'
+                    }
+                }}
+            
             />
             <Button variant="contained" color="primary" onClick={handleDepositETH}>
                 Deposit ETH to Contract

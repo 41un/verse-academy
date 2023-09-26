@@ -404,7 +404,7 @@ function Lesson() {
                         variant="contained" 
                         color="primary" 
                         sx={{ backgroundColor: '#2793FF', borderRadius: '12px' }}
-                        onClick={() => window.open('https://discord.com/', '_blank')}
+                        onClick={() => window.open('hhttps://discord.gg/7yHF65s7Z2', '_blank')}
                     >
                         Discord
                     </Button>

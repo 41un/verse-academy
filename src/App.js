@@ -13,7 +13,7 @@ import { WalletProvider } from './WalletContext';
 import AdminPanel from './pages/AdminPanel';
 
 const chains = [goerli];
-const projectId = process.env.REACT_APP_PROJECT_ID;
+const projectId = '0f544cde3fa9f5283db4ebf52e37fe7f';
 
 const { publicClient } = configureChains(
     chains, 

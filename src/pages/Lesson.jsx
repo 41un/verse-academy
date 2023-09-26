@@ -8,6 +8,7 @@ import { Button, Radio, RadioGroup, FormControlLabel, FormControl, Paper, Typogr
 import Lottie from "lottie-react";
 import successAnimation from '../components/animations/successAnimation.json'
 import failAnimation from '../components/animations/failAnimation.json'
+import rewardAnimation from '../components/animations/rewardAnimation.json'
 import communityAnimation from '../components/animations/communityAnimation.json'
 import {
     useAccount,
@@ -20,7 +21,7 @@ const contractAddress = '0xbFE1f83D7314f284E79AFF4D9d43fc834f5389B2';
 
 function Lesson() {
     const [checkpoint, setCheckpoint] = useState(0);
-    const [depositAmount, setDepositAmount] = useState('');  // Amount of ETH to deposit
+    const [depositAmount, setDepositAmount] = useState('');  
 
 
 
@@ -46,6 +47,8 @@ function Lesson() {
     const isLesson5 = parseInt(lessonId, 10) === 5;
 
 
+    const [showRewardModal, setShowRewardModal] = useState(false);
+    
 
     // Web3 Functions
 
@@ -126,9 +129,10 @@ function Lesson() {
         value: depositAmount
     });
 
-    const handleClaimReward = () => {
+    const handleClaimReward = async () => {
         if (String(checkpoint) >= 5) {
-            claimReward();
+            await claimReward();
+            setShowRewardModal(true);  
         } else {
             console.log(`User has only reached ${String(checkpoint)} checkpoints`);
         }
@@ -274,8 +278,31 @@ function Lesson() {
                         Claim Reward
                     </Button>
                 </div>
-
-
+                <Modal
+                    open={showRewardModal}
+                    onClose={() => setShowRewardModal(false)}
+                    aria-labelledby="reward-modal-title"
+                    aria-describedby="reward-modal-description"
+                >
+                    <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '10px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <Lottie 
+                                animationData={rewardAnimation} 
+                                loop={false}
+                                style={{ width: lottieSize.width, height: lottieSize.height }}                            />
+                            <Typography variant="h4" style={{ color: 'green' }}>
+                                Congratulations!
+                            </Typography>
+                            <Typography variant="h6" style={{ color: 'black', marginBottom: '20px' }}>
+                                You've claimed 15,000 VERSE!
+                            </Typography>
+                            <Typography variant="p" style={{ color: 'black', marginBottom: '20px' }}>
+                                Confirm the transaction on your wallet to receive your reward
+                            </Typography>
+                            <Button variant="contained" size="large" sx={{ backgroundColor: '#2793FF', borderRadius: '12px' }} onClick={() => setShowRewardModal(false)} > Return to course </Button>
+                        </div>
+                    </div>
+                </Modal>
                 <Typography variant="h4">{lesson.title}</Typography>
                 <Typography variant="body1" paragraph>{lesson.description}</Typography>
                 <div style={{ flexBasis: '50%', overflow: 'hidden', width: '100%', position: 'relative', marginBottom: '60px' }}>

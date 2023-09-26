@@ -7,6 +7,7 @@ import courses from '../components/courses';
 import { Button, Radio, RadioGroup, FormControlLabel, FormControl, Paper, Typography, CircularProgress, Modal, LinearProgress } from '@mui/material';
 import Lottie from "lottie-react";
 import successAnimation from '../components/animations/successAnimation.json'
+import communityAnimation from '../components/animations/communityAnimation.json'
 import {
     useAccount,
     useContractWrite,
@@ -39,6 +40,9 @@ function Lesson() {
     const [submittedAnswers, setSubmittedAnswers] = useState(null);
     const [lottieSize, setLottieSize] = useState({ width: 400, height: 400 });
     const [ethClaimed, setEthClaimed] = useState(false);
+
+    // Check if last lesson
+    const isLesson5 = parseInt(lessonId, 10) === 5;
 
 
 
@@ -345,86 +349,118 @@ function Lesson() {
         </FormControl>
     </div>
 ))}
-                    <Button 
-                        variant="contained"
-                        sx={{ 
-                            padding: '5px',
-                            backgroundColor: '#2793FF',
-                            borderRadius: '12px',
-                            margin: '20px 0', 
-                            width: '100%', 
-                            '&:disabled': {
-                                backgroundColor: 'transparent', 
-                                border: '1px solid rgba(255, 255, 255, 0.2)',
-                                color: 'rgba(255, 255, 255, 0.7)' 
-                            }
-                        }}
-                        onClick={handleSubmit}
-                        disabled={!isAllAnswered || !address}
-                    >
-                        {isAllAnswered && !address ? "Connect your wallet" : "Submit Answers"}
-                    </Button>
+                <Button 
+                    variant="contained"
+                    sx={{ 
+                        padding: '5px',
+                        backgroundColor: '#2793FF',
+                        borderRadius: '12px',
+                        margin: '20px 0', 
+                        width: '100%', 
+                        '&:disabled': {
+                            backgroundColor: 'transparent', 
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            color: 'rgba(255, 255, 255, 0.7)' 
+                        }
+                    }}
+                    onClick={isLesson5 ? () => setShowModal(true) : handleSubmit}
+                    disabled={isLesson5 ? false : (!isAllAnswered || !address)}
+                >
+                    {isLesson5 ? "Join community" : (isAllAnswered && !address ? "Connect your wallet" : "Submit Answers")}
+                </Button>
                 </div>
             </Paper>
 
             <Modal
-                open={showModal}
-                onClose={() => setShowModal(false)}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-                style={modalStyle}
-            >
-                <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '10px' }}>
-                    {correctCount === lesson.quiz.length ? (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <Lottie 
-                            animationData={successAnimation} 
-                            loop={false}
-                            style={{ width: lottieSize.width, height: lottieSize.height }}
-                        />
-                            <Typography variant="h4" style={{ color: 'green' }}>
-                                100%
-                            </Typography>
-                            <Typography variant="h6">
-                                Congratulations! You can proceed to {nextLessonExists ? `"${nextLesson?.title}"` : 'the next lesson'}.
-                            </Typography>
-                            {!showNextButton && <CircularProgress variant="determinate" value={progress} />}
-                            {showNextButton && (
-                            <Link to={`/courses/${courseId}/lessons/${nextLessonId}`}>
+    open={showModal}
+    onClose={() => setShowModal(false)}
+    aria-labelledby="simple-modal-title"
+    aria-describedby="simple-modal-description"
+    style={modalStyle}
+>
+    <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '10px', color: 'black' }}>
+        {isLesson5 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <h1>Congratulations!</h1>
+                <Lottie 
+                    animationData={communityAnimation} 
+                    loop={false}
+                    style={{ width: '300px', height: '300px', marginBottom: '20px' }}
+                />
+                <Typography variant="h6" style={{ marginBottom: '20px', textAlign: 'center' }}>
+                    Join thousands of people in our vibrant and passionate community!
+                </Typography>
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <Button 
+                        variant="contained" 
+                        color="primary" 
+                        sx={{ backgroundColor: '#2793FF', borderRadius: '12px', marginRight: '12px' }}
+                        onClick={() => window.open('https://t.me/GetVerse', '_blank')}
+                    >
+                        Telegram
+                    </Button>
+                    <Button 
+                        variant="contained" 
+                        color="primary" 
+                        sx={{ backgroundColor: '#2793FF', borderRadius: '12px' }}
+                        onClick={() => window.open('https://discord.com/', '_blank')}
+                    >
+                        Discord
+                    </Button>
+                </div>
+            </div>
+        ) : (
+                        correctCount === lesson.quiz.length ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <Lottie 
+                                animationData={successAnimation} 
+                                loop={false}
+                                style={{ width: lottieSize.width, height: lottieSize.height }}
+                            />
+                                <Typography variant="h4" style={{ color: 'green' }}>
+                                    100%
+                                </Typography>
+                                <Typography variant="h6">
+                                    Congratulations! You can proceed to {nextLessonExists ? `"${nextLesson?.title}"` : 'the next lesson'}.
+                                </Typography>
+                                {!showNextButton && <CircularProgress variant="determinate" value={progress} />}
+                                {showNextButton && (
+                                <Link to={`/courses/${courseId}/lessons/${nextLessonId}`}>
+                                    <Button 
+                                        variant="contained" 
+                                        color="primary"
+                                        onClick={() => {
+                                            setShowModal(false);
+                                            setSubmittedAnswers(null);
+                                            setAnswers({});
+                                            setCorrectCount(0);
+                                            setIsAllAnswered(false);
+                                            setShowConfetti(false);
+                                            setProgress(0);
+                                            setShowNextButton(false);
+                                        }}
+                                    >
+                                        Next Lesson
+                                    </Button>
+                                </Link>
+                            )}
+
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Typography>
+                                    You got {correctCount} out of {lesson.quiz.length} questions correct.
+                                </Typography>
                                 <Button 
                                     variant="contained" 
-                                    color="primary"
-                                    onClick={() => {
-                                        setShowModal(false);
-                                        setSubmittedAnswers(null);
-                                        setAnswers({});
-                                        setCorrectCount(0);
-                                        setIsAllAnswered(false);
-                                        setShowConfetti(false);
-                                        setProgress(0);
-                                        setShowNextButton(false);
-                                    }}
+                                    color="secondary" 
+                                    sx={{ marginTop: '20px' }} 
+                                    onClick={() => setShowModal(false)}
                                 >
-                                    Next Lesson
+                                    Try Again
                                 </Button>
-                            </Link>
-                        )}
-
-                        </div>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <Typography>
-                                You got {correctCount} out of {lesson.quiz.length} questions correct.
-                            </Typography>
-                            <Button 
-                                variant="contained" 
-                                color="secondary" 
-                                sx={{ marginTop: '20px' }} 
-                                onClick={() => setShowModal(false)}
-                            >
-                                Try Again
-                            </Button>
-                        </div>
+                            </div>
+                        )
                     )}
                 </div>
             </Modal>

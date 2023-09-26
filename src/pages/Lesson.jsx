@@ -7,6 +7,7 @@ import courses from '../components/courses';
 import { Button, Radio, RadioGroup, FormControlLabel, FormControl, Paper, Typography, CircularProgress, Modal, LinearProgress } from '@mui/material';
 import Lottie from "lottie-react";
 import successAnimation from '../components/animations/successAnimation.json'
+import failAnimation from '../components/animations/failAnimation.json'
 import communityAnimation from '../components/animations/communityAnimation.json'
 import {
     useAccount,
@@ -448,18 +449,26 @@ function Lesson() {
                             </div>
                         ) : (
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                
+                                <Lottie 
+                                    animationData={failAnimation} 
+                                    loop={false}
+                                    style={{ width: lottieSize.width, height: lottieSize.height, marginBottom: '20px' }}  // Adjust the width and height as needed
+                                />
+
                                 <Typography>
                                     You got {correctCount} out of {lesson.quiz.length} questions correct.
                                 </Typography>
                                 <Button 
                                     variant="contained" 
                                     color="secondary" 
-                                    sx={{ marginTop: '20px' }} 
+                                    sx={{ backgroundColor: '#2793FF', borderRadius: '12px', marginTop: '20px' }} 
                                     onClick={() => setShowModal(false)}
                                 >
                                     Try Again
                                 </Button>
                             </div>
+
                         )
                     )}
                 </div>

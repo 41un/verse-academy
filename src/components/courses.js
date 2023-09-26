@@ -155,7 +155,7 @@ const courses = [
                             id: 4,
                             title: "Smart Contracts",
                             description: "Learn about smart contracts, how to interact with them, and an example of using a smart contract in a DApp.",
-                            vimeoId: 867854595,
+                            vimeoId: 867954430,
                             quiz: [
                                 {
                                     question: "What is a smart contract?",
